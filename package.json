@@ -1,0 +1,20 @@
+{
+  "name": "devops-lab6",
+  "version": "1.0.0",
+  "description": "Small web app for the CI lab",
+  "main": "src/server.js",
+  "files": [
+    "src/"
+  ],
+  "scripts": {
+    "start": "node src/server.js",
+    "lint": "eslint .",
+    "test": "node --test"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.15.0",
+    "globals": "^17.14.0"
+  }
+}
