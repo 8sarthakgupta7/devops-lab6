@@ -1,20 +1,31 @@
 const http = require("node:http");
 
+const VERSION = process.env.APP_VERSION || "dev";
+
+const PRODUCTS = [
+  { id: 1, name: "Wireless Mouse", price: 799 },
+  { id: 2, name: "USB-C Cable", price: 299 },
+  { id: 3, name: "Laptop Stand", price: 1499 },
+];
+
 function greet(name) {
   return `Hello, ${name || "world"}!`;
 }
 
+function send(res, status, body) {
+  res.writeHead(status, { "Content-Type": "application/json" });
+  res.end(JSON.stringify(body));
+}
+
 function handler(req, res) {
-  res.setHeader("Content-Type", "application/json");
   if (req.url === "/") {
-    res.writeHead(200);
-    res.end(JSON.stringify({ message: greet("DevOps"), version: "1.0.0" }));
+    send(res, 200, { app: "ShopEasy Lite", message: greet("shopper"), version: VERSION });
+  } else if (req.url === "/products") {
+    send(res, 200, PRODUCTS);
   } else if (req.url === "/health") {
-    res.writeHead(200);
-    res.end(JSON.stringify({ status: "ok" }));
+    send(res, 200, { status: "ok", version: VERSION });
   } else {
-    res.writeHead(404);
-    res.end(JSON.stringify({ error: "not found" }));
+    send(res, 404, { error: "not found" });
   }
 }
 
