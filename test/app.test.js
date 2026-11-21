@@ -10,7 +10,7 @@ async function start() {
 }
 
 test("greet returns a greeting", () => {
-  assert.equal(greet("DevOps"), "Hello, DevOps!");
+  assert.equal(greet("DevOps"), "Hello, Everyone!");
   assert.equal(greet(), "Hello, world!");
 });
 
