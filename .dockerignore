@@ -1,0 +1,8 @@
+node_modules
+.git
+.github
+test
+dist
+*.tgz
+.env
+.DS_Store
