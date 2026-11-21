@@ -54,3 +54,35 @@ jobs:
         with:
           name: app-package
           path: dist/*.tgz
+
+  publish:
+    name: Publish image
+    needs: [lint, test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    env:
+      REGISTRY: ghcr.io
+    steps:
+      - uses: actions/checkout@v6
+      - name: Compute image name and version
+        run: |
+          OWNER="${GITHUB_REPOSITORY_OWNER,,}"
+          echo "IMAGE=${REGISTRY}/${OWNER}/shopeasy-lite" >> "$GITHUB_ENV"
+          echo "VERSION=1.0.${GITHUB_RUN_NUMBER}" >> "$GITHUB_ENV"
+          echo "SHORT_SHA=${GITHUB_SHA::7}" >> "$GITHUB_ENV"
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+      - name: Build image
+        run: |
+          docker build \
+            --build-arg APP_VERSION="${VERSION}" \
+            --label "org.opencontainers.image.revision=${GITHUB_SHA}" \
+            --label "org.opencontainers.image.version=${VERSION}" \
+            -t "${IMAGE}:${VERSION}" \
+            -t "${IMAGE}:sha-${SHORT_SHA}" \
+            -t "${IMAGE}:latest" .
+      - name: Push image
+        run: docker push --all-tags "${IMAGE}"
