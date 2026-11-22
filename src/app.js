@@ -6,6 +6,7 @@ const PRODUCTS = [
   { id: 1, name: "Wireless Mouse", price: 799 },
   { id: 2, name: "USB-C Cable", price: 299 },
   { id: 3, name: "Laptop Stand", price: 1499 },
+  { id: 4, name: "Mechanical Keyboard", price: 2499 },
 ];
 
 function greet(name) {
