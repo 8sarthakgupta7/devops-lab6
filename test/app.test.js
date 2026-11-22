@@ -29,7 +29,7 @@ test("GET / identifies the app", async () => {
 test("GET /products returns the catalogue", async () => {
   const { status, body } = await get("/products");
   assert.equal(status, 200);
-  assert.equal(body.length, 3);
+  assert.equal(body.length, 4);
   assert.equal(body[0].name, "Wireless Mouse");
 });
 
